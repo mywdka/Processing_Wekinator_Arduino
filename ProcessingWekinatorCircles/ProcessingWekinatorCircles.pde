@@ -55,7 +55,6 @@ void setup() {
 
 
 void draw() {
-//  background(225);
   background(235);
   
   current_values = parser.calculateValues();
@@ -85,7 +84,6 @@ void drawCircles(){
      float circle_width =  current_values[i]*scaleFactor;
      ellipse(initialX+(i*sepX),y,circle_width,circle_width);
      
- //    fill(255*int(i==0),255*int(i==1),255*int(i==2),int(255*current_values[i]));
      fill(20,int(255*current_values[i]));
      text(name_wekinator_outputs[i], initialX+(i*sepX), y );
       

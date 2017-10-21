@@ -73,7 +73,6 @@ void drawStats() {
   float interlineSeparation = typefaceSize+5;
   float paragraphSeparation = typefaceSize*3;
   float heightRects = 10.0;
-//  float startingtHeightFactor = 0.15;
   float startingtHeightFactor = 0.075;
   float scaleFactor = 2*width/3+(width/10);
   float initialX = width*0.075;  
