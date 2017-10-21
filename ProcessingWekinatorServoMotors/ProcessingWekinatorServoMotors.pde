@@ -20,7 +20,6 @@ WekinatorParser parser;
 Serial myPort;  
 
 float current_outputs[];
-float prev_outputs[];
 
 void setup() {
   size(500, 500);
@@ -41,7 +40,6 @@ void draw() {
 
   sendValuesToArduino();
 
-//  prev_outputs =  current_outputs;
 }
 
 
@@ -64,6 +62,8 @@ void sendValuesToArduino(){
 
 
 /*
+//Arduino code
+
 //WdKA - Interaction Station//
 //2017////////////////////////
 
