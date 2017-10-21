@@ -26,7 +26,7 @@ PFont typeface;
 final String typefaceName = "SourceCodePro-Regular.ttf";
 
 //Size of the typefaces
-final int typefaceSize = 12;
+final int typefaceSize = 13;
 
 //Set to try to print the data
 final boolean verbose = false;
@@ -49,13 +49,14 @@ void setup() {
   // Create the font
   typeface = createFont(typefaceName, typefaceSize);
   textFont(typeface);
-  textAlign(LEFT, TOP);
+  textAlign(CENTER, CENTER);
   
 }
 
 
 void draw() {
-  background(225);
+//  background(225);
+  background(235);
   
   current_values = parser.calculateValues();
 
@@ -66,24 +67,27 @@ void draw() {
 void drawCircles(){
   
   boolean circleUp =false;
-  float scaleFactor = 2*width/3-(3*width/10);
+  float scaleFactor = 2*width/3-(4*width/10);
   float initialX = width*0.2;
   float sepX = width*0.3;
   float sepY = height*0.3;
-   noFill();
     
    for (int i = 0; i < number_wekinator_outputs; i++) {
      
      circleUp = !circleUp;
      
-     stroke(255*int(i==0),255*int(i==1),255*int(i==2));
-
+     stroke(255*int(i==0),255*int(i==1),255*int(i==2),120);
+     fill(255*int(i==0),255*int(i==1),255*int(i==2),60);
      float y = height/3;
      if(circleUp){
        y+=sepY;
      }
-     float circle_width =  current_outputs[i]*scaleFactor;
+     float circle_width =  current_values[i]*scaleFactor;
      ellipse(initialX+(i*sepX),y,circle_width,circle_width);
+     
+ //    fill(255*int(i==0),255*int(i==1),255*int(i==2),int(255*current_values[i]));
+     fill(20,int(255*current_values[i]));
+     text(name_wekinator_outputs[i], initialX+(i*sepX), y );
       
    }  
   
