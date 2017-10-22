@@ -1,8 +1,6 @@
 //WdKA - Interaction Station//
 //2017////////////////////////
 
-import processing.serial.*;
-
 //Specify the number of Wekinator outputs 
 final int number_wekinator_outputs = 3; 
 
