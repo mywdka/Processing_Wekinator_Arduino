@@ -1,24 +1,28 @@
+import oscP5.*;
 
+//It receives the Wekinator outputs through OSC
 class WekinatorParser {
 
 
   OscP5 oscP5;
   
   float target_outputs[];
-  float current_values[];  
+  float current_outputs[];  
   boolean usingEasing = true;
   boolean verbose = false;
   float easing = 0.0;
+  int number_wekinator_outputs = 0 ;
   int oscPort = 0;
 
-  WekinatorParser(boolean usingEasing,float easing,int oscPort,boolean verbose){
+  WekinatorParser(int number_wekinator_outputs,int oscPort,boolean usingEasing,float easing,boolean verbose){
+    this.number_wekinator_outputs = number_wekinator_outputs;
+    this.oscPort = oscPort;
     this.usingEasing = usingEasing;
     this.easing = easing;
-    this.oscPort = oscPort;
     this.verbose = verbose;
   
     target_outputs = new float[number_wekinator_outputs];
-    current_values = new float[number_wekinator_outputs];
+    current_outputs = new float[number_wekinator_outputs];
   
     for(int i = 0; i < number_wekinator_outputs;i++){
         target_outputs[i] = 0.0;          
@@ -26,13 +30,18 @@ class WekinatorParser {
     oscP5 = new OscP5(this,oscPort);  
   }
   
+  //It returns the values received from Wekinator. If usingEasing is true, there is some smoothing effect
   float[] calculateValues() {
     
     for (int i = 0; i < number_wekinator_outputs; i++) {
-      current_values[i] += (target_outputs[i] - current_values[i]) * easing;
-    }  
+      if(usingEasing){
+        current_outputs[i] += (target_outputs[i] - current_outputs[i]) * easing;
+      }else{
+        current_outputs[i] = target_outputs[i];
+      }
+  }  
   
-    return current_values;
+    return current_outputs;
   
   }
 
@@ -47,9 +56,9 @@ class WekinatorParser {
     
     if (theOscMessage.addrPattern().equals("/wek/outputs")) {
       Object[] objects = theOscMessage.arguments();
-      if(verbose){
-        println(objects.length);
-      }
+          if(verbose){
+           println(objects.length);
+          }
       for (int i = 0; i < objects.length; i++) {
         target_outputs[i] = min(max(theOscMessage.get(i).floatValue(), 0.0), 1.0);
       }

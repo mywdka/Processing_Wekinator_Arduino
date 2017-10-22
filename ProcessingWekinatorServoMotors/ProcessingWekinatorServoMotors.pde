@@ -2,7 +2,6 @@
 //2017////////////////////////
 
 import processing.serial.*;
-import oscP5.*;
 
 //Specify the number of Wekinator outputs 
 final int number_wekinator_outputs = 3; 
@@ -33,8 +32,10 @@ void setup() {
   size(500, 500);
   frameRate(60);
 
-  parser = new WekinatorParser(usingEasing,easing,oscPort,verbose);
+  //Receiving data
+  parser = new WekinatorParser(number_wekinator_outputs,oscPort,usingEasing,easing,verbose);
   
+  //Serial connection
   printArray(Serial.list());
   // Change the index (0 in the example) to match your 
    String portName = Serial.list()[2];
@@ -45,7 +46,7 @@ void setup() {
 }
 
 void draw() {
-  background(225);
+  background(235);
   
   current_values = parser.calculateValues();
 

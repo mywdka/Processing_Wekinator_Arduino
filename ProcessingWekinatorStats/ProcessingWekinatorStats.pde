@@ -1,9 +1,6 @@
 //WdKA - Interaction Station//
 //2017////////////////////////
 
-import processing.serial.*;
-import oscP5.*;
-
 //Specify the number of Wekinator outputs 
 final int number_wekinator_outputs = 3; 
 
@@ -44,7 +41,7 @@ void setup() {
   size(500, 500);
   
   //initiliazing the WekinatorParser
-  parser = new WekinatorParser(usingEasing,easing,oscPort,verbose);
+  parser = new WekinatorParser(number_wekinator_outputs,oscPort,usingEasing,easing,verbose);
   frameRate(60);
   smooth();
   noFill();

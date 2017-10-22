@@ -2,7 +2,6 @@
 //2017////////////////////////
 
 import processing.serial.*;
-import oscP5.*;
 
 //Specify the number of Wekinator outputs 
 final int number_wekinator_outputs = 3; 
@@ -45,7 +44,7 @@ void setup() {
   smooth();
 
   //Receiving data
-  parser = new WekinatorParser(usingEasing,easing,oscPort,verbose);
+  parser = new WekinatorParser(number_wekinator_outputs,oscPort,usingEasing,easing,verbose);
   
   //Font
   typeface = createFont(typefaceName, typefaceSize);
@@ -68,7 +67,7 @@ void drawCircles(){
   
   float marginX = width / (number_wekinator_outputs*7);
   float sepCircleX = marginX/2;  
-  float scaleFactor = (width /number_wekinator_outputs)- ((2*marginX)/number_wekinator_outputs)-(((temp_number_wekinator_outputs-1)*sepCircleX)/number_wekinator_outputs);
+  float scaleFactor = (width /number_wekinator_outputs)- ((2*marginX)/number_wekinator_outputs)-(((number_wekinator_outputs-1)*sepCircleX)/number_wekinator_outputs);
   float initialX = marginX+(scaleFactor/2);
   float circle_y = height/2;
   float sepY = height/3;
