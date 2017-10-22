@@ -7,37 +7,49 @@ import oscP5.*;
 //Specify the number of Wekinator outputs 
 final int number_wekinator_outputs = 3; 
 
+//Current values in a [0.0 - 1.0] range
+float current_values[];
+
+//Class that parses the data received from Wekinator
+WekinatorParser parser;
+
 //OSC port used by Wekinator
 final int oscPort = 12000;
 
+//Printing some info in the console if true
 final boolean verbose = false;
+
+//Set to false to disable easing (smoothing) effect in the animations
 final boolean usingEasing = true;
+
+//Amount of easing
 final float easing = 0.05;
 
-WekinatorParser parser;
-
-// Create object from Serial class
+//Serial port for communicating with Arduino
 Serial myPort;  
 
-float current_outputs[];
 
 void setup() {
   size(500, 500);
-  parser = new WekinatorParser(usingEasing,easing,oscPort,verbose);
   frameRate(60);
+
+  parser = new WekinatorParser(usingEasing,easing,oscPort,verbose);
   
-  // Open whatever port is the one you're using.
+  printArray(Serial.list());
+  // Change the index (0 in the example) to match your 
    String portName = Serial.list()[2];
   myPort = new Serial(this, portName, 9600);
-  println(portName);
-  
+
+   println(portName+" selected");
+ 
 }
 
 void draw() {
   background(225);
   
-  current_outputs = parser.calculateValues();
+  current_values = parser.calculateValues();
 
+  //Sending values to Arduno
   sendValuesToArduino();
 
 }
@@ -48,7 +60,7 @@ void sendValuesToArduino(){
  String strSent = "";
  
  for(int i = 0; i < number_wekinator_outputs; i++){
-   strSent += str(int(current_outputs[i]*servoAngleRange));
+   strSent += str(int(current_values[i]*servoAngleRange));
    
    if(i != (number_wekinator_outputs-1) ){
       strSent += ",";
@@ -57,9 +69,10 @@ void sendValuesToArduino(){
  strSent += "\r";
  
  myPort.write(strSent);
- println(strSent);
+ if(verbose){
+   println(strSent);
+  }
 }
-
 
 /*
 //Arduino code
@@ -73,15 +86,11 @@ void sendValuesToArduino(){
 const int numServos = 3;
 
 //The first servo motor is connected to this pin.
-//Connect the rest of the servo motors to the next pins
-const int initialServoPin = 5;
+//Connect the rest of the servo motors to the next pins (Digital Pins 6 & 7)
+const int initialServoPin = 5; 
 
 Servo myServos[numServos];  
-int inputValues[numServos];
 int servoValues[numServos];
-
-
-static char inputBuffer[80];
 
 void setup() 
 { 
@@ -94,7 +103,6 @@ void setup()
     myServos[i].attach(i+initialServoPin); 
     //Initialize the servo motors to the position 0
     myServos[i].write(0); 
-    inputValues[i] = 0;
     servoValues[i] = 0;    
   }
   

@@ -28,7 +28,7 @@ final String typefaceName = "SourceCodePro-Regular.ttf";
 //Size of the typefaces
 final int typefaceSize = 13;
 
-//Set to try to print the data
+//Printing some info in the console if true
 final boolean verbose = false;
 
 //Set to false to disable easing (smoothing) effect in the animations
@@ -40,13 +40,14 @@ final float easing = 0.05;
 
 
 void setup() {
-  size(500, 500);
-  parser = new WekinatorParser(usingEasing,easing,oscPort,verbose);
+  size(700, 380);
   frameRate(60);
   smooth();
-  noFill();
+
+  //Receiving data
+  parser = new WekinatorParser(usingEasing,easing,oscPort,verbose);
   
-  // Create the font
+  //Font
   typeface = createFont(typefaceName, typefaceSize);
   textFont(typeface);
   textAlign(CENTER, CENTER);
@@ -65,27 +66,27 @@ void draw() {
 
 void drawCircles(){
   
-  boolean circleUp =false;
-  float scaleFactor = 2*width/3-(4*width/10);
-  float initialX = width*0.2;
-  float sepX = width*0.3;
-  float sepY = height*0.3;
-    
-   for (int i = 0; i < number_wekinator_outputs; i++) {
+  float marginX = width / (number_wekinator_outputs*7);
+  float sepCircleX = marginX/2;  
+  float scaleFactor = (width /number_wekinator_outputs)- ((2*marginX)/number_wekinator_outputs)-(((temp_number_wekinator_outputs-1)*sepCircleX)/number_wekinator_outputs);
+  float initialX = marginX+(scaleFactor/2);
+  float circle_y = height/2;
+  float sepY = height/3;
+  
+  //For each one of the Wekinator Outputs draw a circle  
+   for (int i = 0; i < number_wekinator_outputs; i++) {     
      
-     circleUp = !circleUp;
+     float circle_width =  current_values[min(i,2)]*scaleFactor;
+     float circle_x = initialX+(i*scaleFactor)+(i*sepCircleX);
      
-     stroke(255*int(i==0),255*int(i==1),255*int(i==2),120);
-     fill(255*int(i==0),255*int(i==1),255*int(i==2),60);
-     float y = height/3;
-     if(circleUp){
-       y+=sepY;
-     }
-     float circle_width =  current_values[i]*scaleFactor;
-     ellipse(initialX+(i*sepX),y,circle_width,circle_width);
+     //circle
+     stroke(255*int(i==1),255*int(i==2),255*int(i==0),120);
+     fill(255*int(i==1),255*int(i==2),255*int(i==0),60);
+     ellipse(circle_x,circle_y,circle_width,circle_width);     
      
-     fill(20,int(255*current_values[i]));
-     text(name_wekinator_outputs[i], initialX+(i*sepX), y );
+     //text
+     fill(20,int(255*current_values[min(i,2)]));
+     text(name_wekinator_outputs[min(i,2)], circle_x, circle_y );
       
    }  
   
